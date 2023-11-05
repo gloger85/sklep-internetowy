@@ -1,15 +1,28 @@
 <p class="mt-4">Dodaj nowe zadanie</p>
 <input type="text" #name class="form-control" name="todo">
 <button type="button" class="btn btn-primary mt-3" (click)="addTODO(name.value)">Dodaj zadanie</button>
+<div class="alert alert-warning alert-dismissible fade show mt-2" role="alert" *ngIf="errorMessage">
+    {{errorMessage}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close" (click)="clearErrorMessage()"></button>
+</div>
 <div class="mt-5">
     <h4>Zadania:</h4>
     <ul class="list-group todos-list" *ngIf="todos.length >0; else noTask">
-    <li class="list-group-item" *ngFor="let todo of todos;let i = index">    
-        <input type="checkbox"
-        class="forms-check-input my-1"
-        [checked]="todo.isComplete">
-        <span class="todo-item">{{i+1}}. {{todo.name}}</span>
-    </li>
+        <ng-container *ngFor="let todo of todos;let i = index">
+            <li class="list-group-item" >    
+                <input type="checkbox"
+                class="forms-check-input my-1"
+                [checked]="todo.isComplete"
+                (change)="changeTodoStatus(todo)"
+                >
+                <span class="todo-item" [ngClass]="{'text-decoration-line-through': todo.isComplete}">{{i+1}}. {{todo.name}}</span>
+            </li>
+        </ng-container>
     </ul>
     <ng-template #noTask>Aktualnie brak zadań</ng-template>
+</div>
+<div [ngSwitch]="testSwitchCase">
+    <p *ngSwitchCase="'tak'">Wyświetlam tak!</p>
+    <p *ngSwitchCase="'nie'">Wyświetlam nie!</p>
+    <p *ngSwitchDefault>Wyświetlam default!</p>
 </div>
