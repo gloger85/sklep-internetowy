@@ -1,10 +1,5 @@
-<p class="mt-4">Dodaj nowe zadanie</p>
-<input type="text" #name class="form-control" name="todo">
-<button type="button" class="btn btn-primary mt-3" (click)="addTODO(name.value)">Dodaj zadanie</button>
-<div class="alert alert-warning alert-dismissible fade show mt-2" role="alert" *ngIf="errorMessage">
-    {{errorMessage}}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close" (click)="clearErrorMessage()"></button>
-</div>
+<app-add-todo-form (addTodo)="addTodo($event)"></app-add-todo-form>
+<app-alert *ngIf="errorMessage" [errorMessage]="errorMessage" (clearErrorMessage)="clearErrorMessage()"></app-alert>
 <div class="mt-5">
     <h4>Zadania:</h4>
     <ul class="list-group todos-list" *ngIf="todos.length >0; else noTask">
