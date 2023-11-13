@@ -4,14 +4,7 @@
     <h4>Zadania:</h4>
     <ul class="list-group todos-list" *ngIf="todos.length >0; else noTask">
         <ng-container *ngFor="let todo of todos;let i = index">
-            <li class="list-group-item" >    
-                <input type="checkbox"
-                class="forms-check-input my-1"
-                [checked]="todo.isComplete"
-                (change)="changeTodoStatus(todo)"
-                >
-                <span class="todo-item" [ngClass]="{'text-decoration-line-through': todo.isComplete}">{{i+1}}. {{todo.name}}</span>
-            </li>
+            <app-todo [todo]="todo" [i]="i" ></app-todo>
         </ng-container>
     </ul>
     <ng-template #noTask>Aktualnie brak zadań</ng-template>
