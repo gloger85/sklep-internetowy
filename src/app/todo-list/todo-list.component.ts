@@ -7,6 +7,7 @@ import { Todo } from '../shared/interfaces/todo.interface';
   styleUrls: ['./todo-list.component.css']
 })
 export class TodoListComponent {
+
   todos: Todo[]=[];
   errorMessage = "";
   testSwitchCase = "tak";
@@ -21,9 +22,12 @@ export class TodoListComponent {
     console.log('Aktualna lista todo: ', this.todos);
   }
 
-
   clearErrorMessage (){
     this.errorMessage = '';
+  }
+
+  deleteTodo(i: number) {
+    this.todos = this.todos.filter((todo: Todo, index: number) => index !== i)
   }
 
 }

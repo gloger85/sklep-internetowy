@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Todo } from 'src/app/shared/interfaces/todo.interface';
 
 @Component({
@@ -7,8 +7,10 @@ import { Todo } from 'src/app/shared/interfaces/todo.interface';
   styleUrls: ['./todo.component.css']
 })
 export class TodoComponent {
+
   @Input() todo!: Todo;
   @Input() i!: number;
+  @Output() delete = new EventEmitter<void>();
   openModal = false;  
 
   changeTodoStatus(todo: Todo){
@@ -19,4 +21,7 @@ export class TodoComponent {
     this.openModal = !this.openModal;
   }
 
+  deleteTodo() {
+    this.delete.emit();
+  }
 }
