@@ -1,4 +1,5 @@
-import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, OnInit, DoCheck, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, OnInit, DoCheck, AfterViewInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { timeout } from 'rxjs';
 import { Todo } from 'src/app/shared/interfaces/todo.interface';
 
 @Component({
@@ -7,7 +8,7 @@ import { Todo } from 'src/app/shared/interfaces/todo.interface';
   styleUrls: ['./todo.component.css']
 })
 //implements OnInit
-export class TodoComponent implements OnChanges, DoCheck, AfterViewInit {
+export class TodoComponent implements OnChanges, DoCheck, AfterViewInit, OnDestroy, OnInit {
 
   @Input() todo!: Todo;
   @Input() i!: number;
@@ -15,18 +16,30 @@ export class TodoComponent implements OnChanges, DoCheck, AfterViewInit {
   @Output() changeStatus = new EventEmitter<number>();
   @ViewChild('li') li!: ElementRef;
   openModal = false;  
+  timeout!: number;
 
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log(changes);
   }
 
+  ngOnDestroy(): void {
+    clearTimeout(this.timeout);
+    console.log('ngOnDestroy: object has been removed');
+  }
+
+  ngOnInit(): void {
+    this.timeout = setTimeout(() => {
+      console.log('setTimeout')
+    }, 3000);
+  }
+
   ngAfterViewInit(): void {
-    console.log('ngAfterViewInity zostal wykonany. ' + this.li);
+    console.log('ngAfterViewInity has been started. ' + this.li);
   }
 
   ngDoCheck(): void {
-    console.log('ngDoCheck zostal wykonany');
+    console.log('ngDoCheck has been started');
   }
 
   changeTodoStatus(){
@@ -41,3 +54,4 @@ export class TodoComponent implements OnChanges, DoCheck, AfterViewInit {
     this.delete.emit();
   }
 }
+
