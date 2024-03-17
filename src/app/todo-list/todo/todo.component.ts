@@ -17,6 +17,7 @@ export class TodoComponent implements OnChanges, DoCheck, AfterViewInit, OnDestr
   @ViewChild('li') li!: ElementRef;
   openModal = false;  
   timeout!: number;
+  keyValueTest: {[key: string]:string | number} = {name: 'test',age: 12};
 
 
   ngOnChanges(changes: SimpleChanges): void {

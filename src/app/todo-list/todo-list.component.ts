@@ -14,7 +14,7 @@ export class TodoListComponent implements OnChanges, AfterViewInit, AfterViewChe
   @ViewChild(TodoComponent) todoComp!: TodoComponent;
   @ViewChildren(TodoComponent) todoComps!: TodoComponent;
 
-  todos: Todo[]=[];
+  todos: Todo[]=JSON.parse(localStorage.getItem('todos')! ) ?? [];
   errorMessage = "";
   testSwitchCase = "tak";
 
@@ -37,6 +37,7 @@ export class TodoListComponent implements OnChanges, AfterViewInit, AfterViewChe
     }
 
     this.todos.push({name: todo, isComplete: false});
+    localStorage.setItem('todos',JSON.stringify(this.todos));
     console.log('Aktualna lista todo: ', this.todos);
   }
 
@@ -46,6 +47,7 @@ export class TodoListComponent implements OnChanges, AfterViewInit, AfterViewChe
 
   deleteTodo(i: number) {
     this.todos = this.todos.filter((todo: Todo, index: number) => index !== i)
+    localStorage.setItem('todos',JSON.stringify(this.todos));
   }
 
   changeTodoStatus(index: number) {
@@ -53,6 +55,7 @@ export class TodoListComponent implements OnChanges, AfterViewInit, AfterViewChe
       ...this.todos[index],
       isComplete: !this.todos[index].isComplete
       }
+      localStorage.setItem('todos',JSON.stringify(this.todos));
     }
 
 }
