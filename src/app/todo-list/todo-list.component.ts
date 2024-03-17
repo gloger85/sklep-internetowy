@@ -2,6 +2,7 @@ import { Component, OnChanges, SimpleChanges, Input, ViewChild, AfterViewInit, A
 import { Todo } from '../shared/interfaces/todo.interface';
 import { AddTodoFormComponent } from './add-todo-form/add-todo-form.component';
 import { TodoComponent } from './todo/todo.component';
+import { TodoService } from '../core/services/todo.service';
 
 @Component({
   selector: 'app-todo-list',
@@ -14,9 +15,11 @@ export class TodoListComponent implements OnChanges, AfterViewInit, AfterViewChe
   @ViewChild(TodoComponent) todoComp!: TodoComponent;
   @ViewChildren(TodoComponent) todoComps!: TodoComponent;
 
-  todos: Todo[]=JSON.parse(localStorage.getItem('todos')! ) ?? [];
+  todos: Todo[] = this.todoService.todos;
   errorMessage = "";
   testSwitchCase = "tak";
+
+  constructor(private todoService: TodoService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log(changes);
@@ -30,32 +33,27 @@ export class TodoListComponent implements OnChanges, AfterViewInit, AfterViewChe
     console.log ('ngAfterViewChecked was triggered ' + this.todoComp);
   }
 
-  addTodo(todo:string): void{
-    if (todo.length<=3){
-      this.errorMessage='Zadanie powinno miec co najmiej 4 znaki!';
-      return;
-    }
-
-    this.todos.push({name: todo, isComplete: false});
-    localStorage.setItem('todos',JSON.stringify(this.todos));
-    console.log('Aktualna lista todo: ', this.todos);
-  }
-
   clearErrorMessage (){
     this.errorMessage = '';
   }
 
+  addTodo(todo:string): void{
+    if(todo.length <=3){
+      this.errorMessage = "Zadanie powinno miec co najmniej 3 znaki";
+      return;
+    }
+    this.todoService.addTodo(todo);
+    this.todos = this.todoService.todos;
+  }
+
   deleteTodo(i: number) {
-    this.todos = this.todos.filter((todo: Todo, index: number) => index !== i)
-    localStorage.setItem('todos',JSON.stringify(this.todos));
+    this.todoService.deleteTodo(i);
+    this.todos = this.todoService.todos; 
   }
 
   changeTodoStatus(index: number) {
-    this.todos[index] = {
-      ...this.todos[index],
-      isComplete: !this.todos[index].isComplete
-      }
-      localStorage.setItem('todos',JSON.stringify(this.todos));
+    this.todoService.changeTodoStatus(index);
+    this.todos = this.todoService.todos; 
     }
 
 }
