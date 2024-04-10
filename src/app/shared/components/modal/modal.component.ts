@@ -1,24 +1,25 @@
-import { AfterContentChecked, AfterContentInit, Component, ContentChild, ElementRef, EventEmitter, Input, Output } from '@angular/core';
+import { Component,  EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+
 
 @Component({
   selector: 'app-modal',
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.css']
 })
-export class ModalComponent implements AfterContentInit, AfterContentChecked {
-
+export class ModalComponent implements OnInit, OnDestroy  {
   @Input() title!: string;
   @Output() close = new EventEmitter<void>();
-  @ContentChild('modalDiv') modalDiv!: ElementRef;
-  @ContentChild('check ') checkbox!: ElementRef;
+  
+  
+  ngOnInit(): void {
+    
 
-  ngAfterContentInit(): void {
-    console.log('ngAfterContentInit test: ' + this.modalDiv);
+  }
+  ngOnDestroy(): void {
+    
   }
 
-  ngAfterContentChecked(): void {
-    console.log(this.checkbox.nativeElement.checked);
-  }
+  
 
   onClose(){
     this.close.emit();

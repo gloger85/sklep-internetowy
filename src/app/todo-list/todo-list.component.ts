@@ -1,15 +1,17 @@
-import { Component, OnChanges, SimpleChanges, Input, ViewChild, AfterViewInit, AfterViewChecked, ViewChildren } from '@angular/core';
+import { Component, OnChanges, SimpleChanges, Input, ViewChild, AfterViewInit, AfterViewChecked, ViewChildren, OnInit, OnDestroy } from '@angular/core';
 import { Todo } from '../shared/interfaces/todo.interface';
 import { AddTodoFormComponent } from './add-todo-form/add-todo-form.component';
 import { TodoComponent } from './todo/todo.component';
 import { TodoService } from '../core/services/todo.service';
+import { TestService } from '../core/services/test.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-todo-list',
   templateUrl: './todo-list.component.html',
   styleUrls: ['./todo-list.component.css']
 })
-export class TodoListComponent implements OnChanges, AfterViewInit, AfterViewChecked {
+export class TodoListComponent implements OnChanges, AfterViewInit, AfterViewChecked, OnInit, OnDestroy {
 
   @Input() test!: string;
   @ViewChild(TodoComponent) todoComp!: TodoComponent;
@@ -18,8 +20,15 @@ export class TodoListComponent implements OnChanges, AfterViewInit, AfterViewChe
   todos: Todo[] = this.todoService.todos;
   errorMessage = "";
   testSwitchCase = "tak";
+  sub! : Subscription;
 
-  constructor(private todoService: TodoService) {}
+  constructor(private todoService: TodoService, private testService: TestService) {}
+ 
+  ngOnInit(): void {
+    this.sub = this.todoService.todoChanged.subscribe({
+      next: arrTodos => this.todos = arrTodos
+    })
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log(changes);
@@ -43,17 +52,20 @@ export class TodoListComponent implements OnChanges, AfterViewInit, AfterViewChe
       return;
     }
     this.todoService.addTodo(todo);
-    this.todos = this.todoService.todos;
-  }
+      }
 
   deleteTodo(i: number) {
     this.todoService.deleteTodo(i);
-    this.todos = this.todoService.todos; 
+    
   }
 
   changeTodoStatus(index: number) {
     this.todoService.changeTodoStatus(index);
-    this.todos = this.todoService.todos; 
+    
+    }
+
+    ngOnDestroy(): void {      
+      this.sub.unsubscribe();
     }
 
 }
