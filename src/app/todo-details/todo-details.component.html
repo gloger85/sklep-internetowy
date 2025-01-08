@@ -1,0 +1,9 @@
+<div class="mt-3">
+    <p *ngIf="!todo">Nie ma zadania o podanym numerze indeksu!</p>
+    <div *ngIf="todo">
+        <p>Treść zadaniaL {{todo.name}}</p>
+        <p>Czy zadanie został wykonane: {{todo.isComplete ? 'tak' : 'nie'}}</p>
+        <p>Przejdź do kolejnego zadania:</p>
+        <button class="btn btn-sm btn-info" (click)="navigateNextTodo()">Następne zadanie</button>
+    </div>
+</div>

@@ -1,4 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, OnInit, DoCheck, AfterViewInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { timeout } from 'rxjs';
 import { Todo } from 'src/app/shared/interfaces/todo.interface';
 
@@ -10,6 +11,7 @@ import { Todo } from 'src/app/shared/interfaces/todo.interface';
 //implements OnInit
 export class TodoComponent implements OnChanges, DoCheck, AfterViewInit, OnDestroy, OnInit {
 
+
   @Input() todo!: Todo;
   @Input() i!: number;
   @Output() delete = new EventEmitter<void>();
@@ -19,6 +21,7 @@ export class TodoComponent implements OnChanges, DoCheck, AfterViewInit, OnDestr
   timeout!: number;
   keyValueTest: {[key: string]:string | number} = {name: 'test',age: 12};
 
+constructor(private router: Router) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log(changes);
@@ -54,5 +57,10 @@ export class TodoComponent implements OnChanges, DoCheck, AfterViewInit, OnDestr
   deleteTodo() {
     this.delete.emit();
   }
+
+  navigateToDetails() {
+    this.router.navigate(['/todo',this.i])
+    }
+
 }
 

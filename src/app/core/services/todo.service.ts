@@ -19,6 +19,9 @@ log(){  console.log('ToDo  service is running');}
   public get todos() {
     return this._todos.slice();
   }
+  getTodo(index: number): Todo | undefined {
+    return this.todos[index];
+  }
 
   addTodo(name:string): void{
     this._todos.push({name, isComplete: false});
