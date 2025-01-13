@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, OnInit, DoCheck, AfterViewInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { timeout } from 'rxjs';
 import { Todo } from 'src/app/shared/interfaces/todo.interface';
 
@@ -21,7 +21,7 @@ export class TodoComponent implements OnChanges, DoCheck, AfterViewInit, OnDestr
   timeout!: number;
   keyValueTest: {[key: string]:string | number} = {name: 'test',age: 12};
 
-constructor(private router: Router) {}
+constructor(private router: Router, private route: ActivatedRoute) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log(changes);
@@ -59,7 +59,12 @@ constructor(private router: Router) {}
   }
 
   navigateToDetails() {
-    this.router.navigate(['/todo',this.i])
+    const navigationExtras: NavigationExtras = {
+      relativeTo: this.route,
+      //state: {example: 'test'}
+      // queryParams: {id: this.i, test: 'wartość'}
+    }
+    this.router.navigate([this.i], navigationExtras)
     }
 
 }
