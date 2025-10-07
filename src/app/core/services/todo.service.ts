@@ -7,7 +7,8 @@ import { Todo } from 'src/app/shared/interfaces/todo.interface';
 })
 export class TodoService {
 
-  private _todos: Todo[]=JSON.parse(localStorage.getItem('todos')! ) ?? [];
+  //private _todos: Todo[]=JSON.parse(localStorage.getItem('todos')! ) ?? [];
+  private _todos: Todo[]= [];
   todoChanged = new Subject<Todo[]>();
 
 
@@ -24,7 +25,7 @@ log(){  console.log('ToDo  service is running');}
   }
 
   addTodo(name:string): void{
-    this._todos.push({name, isComplete: false});
+   // this._todos.push({name, isComplete: false});
     this.saveToLocalStorage();
     this.todoChanged.next(this.todos)
   }
